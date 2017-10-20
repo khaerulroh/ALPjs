@@ -354,5 +354,120 @@ class LINE extends LineAPI {
            await this._client.updateGroup(0, ax);}else{}
 		
         }
+	    
+	if(txt == 'hi' || txt == 'respon') {
+            this._sendMessage(seq, 'BOT hadir🚨🚨');
+        }
+
+      	if(txt == 'command' || txt == 'cm') {
+	          this._sendMessage(seq, '=====🚨Umum🚨=====\n\n✋ Respon/Tes\n✋ Set\n✋ Cek\n✋ Reset\n✋ Myid\n✋ Join [URL group]\n✋ Gift\n✋ Booster\n✋ Gcreator (pembuat group)\n✋ Creator\n✋ Ginfo (info tentang group)\n\n=====💣Admin💣=====\n\n🚨Lockgroup on/off\n🚨 Kick on/off\n🚨 Cancel on/off\n🚨 Qr on/off\n🚨 JoinQr on/off\n🚨 Cancel\n🚨 SpamGroup\n🚨 Bye\n🚨 Tag (tag semua member group)\n🚨 Ourl/Curl\n🚨 Out [@]\n\n\n💣💣💣Pow Bot💣💣💣');
+      	}
+
+        if(txt == 'boost') {
+            const curTime = (Date.now() / 1000);
+            await this._sendMessage(seq,'Processing....');
+            const rtime = (Date.now() / 1000) - curTime;
+            await this._sendMessage(seq, `${rtime} second(s)`);
+        }
+
+        if(txt == 'cleanse' && isAdminOrBot(seq.from)) {  
+            this._sendMessage(seq, 'cleanse starting🚨🚨');
+            let { listMember } = await this.searchGroup(seq.to);
+            for (var i = 0; i < listMember.length; i++) {
+                if(!isAdminOrBot(listMember[i].mid)){
+                    this._kickMember(seq.to,[listMember[i].mid]);
+                }
+            }
+        }    
+	
+        if(txt == 'set') {
+            this._sendMessage(seq, `check tukang sider!!!`);
+            this.removeReaderByGroup(seq.to);
+        }
+
+        if(txt == 'reset') {
+            this.checkReader = []
+            this._sendMessage(seq, `Reset succes!!`);
+        }
+
+      	if(txt == 'tag' && isAdminOrBot (seq.from)) {
+            let rec = await this._getGroup(seq.to);
+            const mentions = await this.mention(rec.members);
+   	        seq.contentMetadata = mentions.cmddata;
+            await this._sendMessage(seq,mentions.names.join(''));
+        }
+
+        if(txt == 'cek') {
+            let rec = await this.check(this.checkReader,seq.to);
+            const mentions = await this.mention(rec);
+            seq.contentMetadata = mentions.cmddata;
+            await this._sendMessage(seq,mentions.names.join(''));
+        }
+	    
+	const action = ['qr on','qr off','joinqr on','joinqr off','cancel on','cancel off','kick on','kick off','lockgroup on','lockgroup off']
+        if(action.includes(txt)) {
+           this.setState(seq);
+        } 
+
+        if(txt == 'creator') {
+        	  seq.contentType=13;
+            seq.contentMetadata = { mid: 'u3b015a9a7307cdecc4904fdb886d23b4' };
+            this._client.sendMessage(1, seq);
+        }
+     
+        if(txt == 'gift') {
+           	seq.contentType = 9
+            seq.contentMetadata = {'PRDID': 'a0768339-c2d3-4189-9653-2909e9bb6f58','PRDTYPE': 'THEME','MSGTPL': '5'};
+            this._client.sendMessage(1, seq)      
+        }
+
+        if(txt == 'myid') {
+            this._sendMessage(seq,`MID kamu: ${seq.from}`);
+        }
+	    
+	const joinByUrl = ['ourl','curl'];
+        if(joinByUrl.includes(txt) && isAdminOrBot(seq.from)) {
+            let updateGroup = await this._getGroup(seq.to);
+            updateGroup.preventJoinByTicket = true;
+            if(txt == 'ourl') {
+                updateGroup.preventJoinByTicket = false;
+                const groupUrl = await this._reissueGroupTicket(seq.to);
+                this._sendMessage(seq,`http://line.me/R/ti/g/${groupUrl}`);
+            }
+            await this._updateGroup(updateGroup);       
+        }        
+
+        if(cmd == 'join') { //untuk join group pake qrcode contoh: join line://anu/g/anu
+            const [ ticketId ] = payload.split('g/').splice(-1);
+            let { id } = await this._findGroupByTicket(ticketId);
+            await this._acceptGroupInvitationByTicket(id,ticketId);
+        }
+	   
+	if(cmd == 'spm' && isAdminOrBot(seq.from)) { // untuk spam invite contoh: spm <mid>
+            for (var i = 0; i < 4; i++) {
+	        	await this._getAllContactIds();
+            this._createGroup(4,'SPAM',seq.to);
+            }
+          
+        }
+
+        if(cmd == 'lirik') {
+            let lyrics = await this._searchLyrics(payload);
+            this._sendMessage(seq,lyrics);
+        }
+
+        if(txt == 'bye' && isAdminOrBot(seq.from)) {
+            let name = group.name;
+            this._sendMessage(seq, `Bye ${name}`);
+            this._leaveGroup(seq.to);
+        }
+
+    }
+
+}
+
+module.exports = new LINE();
+	
+      
         
         
