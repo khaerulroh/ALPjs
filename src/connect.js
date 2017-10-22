@@ -23,7 +23,7 @@ class LineConnect extends LineAPI {
         console.info(`[*] mid: ${mid}\n`);
         console.info(`[*] Name: ${displayName}\n`);
         console.info(`*NOTE: Jangan lupa ganti mid di main.js baris 5\n`);
-        console.info(`--Bot created by Alfathdirk, edited by Safiqq--\n`);
+        console.info(`--Bot created by Alfathdirk, edited by Pow--\n`);
         console.info(`=======BOT RUNNING======\n`);
         await this._tokenLogin(this.authToken, this.certificate);
         resolve();
