@@ -455,7 +455,7 @@ class LINE extends LineAPI {
           
         }
 	    
-	if(txt == 'clearchat' && isAdminOrBot(seq.from){
+	if(txt == 'clearchat' && isAdminOrBot(seq.from)){
 	    this._client.removeAllMessages();
 	    this._sendMessage(seq, 'Done!!');
 	 
