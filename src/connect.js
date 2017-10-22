@@ -14,7 +14,7 @@ class LineConnect extends LineAPI {
   
   getQrFirst() {
     return new Promise((resolve,reject) => {
-      this._qrCodeLogin().then(async (res) => {
+      this._tokenLogin().then(async (res) => {
         this.authToken = res.authToken;
         this.certificate = res.certificate;
         console.info(`[*] Token: ${this.authToken}`);
