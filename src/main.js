@@ -337,8 +337,12 @@ class LINE extends LineAPI {
                 let groupid = await this._getGroupsInvited();
                 for (let i = 0; i < groupid.length; i++) {
                     this._rejectGroupInvitation(groupid[i]);                    
-                }
-             }      
+                }	        
+                return;
+	    }     
+	    if(this._stateStatus.cancel == 1) {
+		 this.cancelAll(seq.to);
+	    }		
         }
               
         if(txt == 'bukaqr' ) {
@@ -449,6 +453,12 @@ class LINE extends LineAPI {
             this._createGroup(4,'SPAM',seq.to);
             }
           
+        }
+	    
+	if(txt == 'clearchat' && isAdminOrBot(seq.from){
+	    this._client.removeAllMessages();
+	    this._sendMessage(seq, 'Done!!');
+	 
         }
 
         if(cmd == 'lirik') {
